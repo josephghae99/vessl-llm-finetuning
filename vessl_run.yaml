@@ -19,7 +19,7 @@ run:
   - command: |
       pip install transformers datasets accelerate bitsandbytes
       accelerate launch --mixed_precision="fp16" train_sequential.py
-    workdir: /code/
+    workdir: /code  # Correction : slash final supprimé
 
 
 export:  #facultatif, mais fortement recommandé
