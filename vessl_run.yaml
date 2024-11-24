@@ -1,0 +1,26 @@
+name: Sequential LLM Fine-tuning
+description: Fine-tuning séquentiel d'un LLM avec datasets multiples.
+
+resources:
+  cluster: vessl-kr-a100-80g-sxm # Votre cluster VESSL
+  preset: gpu-a100-80g-medium #  Adapter à vos besoins
+
+image: quay.io/vessl-ai/torch:2.3.1-cuda12.1-r5
+
+import:
+  /code/:
+    git:
+      url: https://github.com/josephghae99/vessl-llm-finetuning.git # URL de votre repository
+      ref: main # Branche principale de votre repository
+  /dataset/: vessl-dataset://attirer/systemthinking  # Chemin vers vos datasets dans VESSL
+
+
+run:
+  - command: |
+      pip install transformers datasets accelerate bitsandbytes
+      accelerate launch --mixed_precision="fp16" train_sequential.py
+    workdir: /code/
+
+
+export:  #facultatif, mais fortement recommandé
+  /artifacts/: vessl-artifact://
